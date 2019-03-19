@@ -4,17 +4,17 @@
   </span>
   <span class="spacer"></span>
   <ul>
-    <li >
-      <a mat-button routerLink="/" routerLinkActive="mat-accent">Posts</a>
+    <li *ngIf="userisAuthenticated">
+      <a mat-button routerLink="/" routerLinkActive="mat-accent">My Profile</a>
     </li>
     <li >
-      <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent">Login</a>
+      <a *ngIf="!userisAuthenticated" mat-button routerLink="/auth/login" routerLinkActive="mat-accent">Login</a>
     </li>
     <li >
-        <a mat-button routerLink="/auth/signup" routerLinkActive="mat-accent">Signup</a>
+        <a *ngIf="!userisAuthenticated" mat-button routerLink="/auth/signup" routerLinkActive="mat-accent">Signup</a>
       </li>
-    <li >
-      <a mat-button >Logout</a>
+    <li *ngIf="userisAuthenticated">
+      <a mat-button (click)="onLogout()">Logout</a>
     </li>
   </ul>
 </mat-toolbar>
