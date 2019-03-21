@@ -17,6 +17,17 @@ export class AuthService {
   private userId: string;
   private authStatusListener = new Subject<boolean>();
 
+  private isInitiatedListener = new Subject<boolean>();
+  private isInitiated = false;
+
+  getIsInitiatedListener() {
+    return this.isInitiatedListener.asObservable();
+  }
+
+  getIsInitated() {
+    return this.isInitiated;
+  }
+
   constructor(private http: HttpClient, private router: Router) {}
 
   getToken() {
@@ -49,7 +60,7 @@ export class AuthService {
   login(email: string, password: string) {
     const authData: AuthData = { email: email, password: password };
     this.http
-      .post<{ token: string, expiresIn: number, userId: string }>(
+      .post<{ token: string, expiresIn: number, userId: string, pol:string }>(
         BACKEND_URL + '/login',
         authData
       )
@@ -57,18 +68,25 @@ export class AuthService {
         const token = response.token;
         this.token = token;
         if (token) {
-        const expiresInDuration = response.expiresIn;
-        this.setAuthTimer(expiresInDuration);
-        this.isAuthenticated = true;
-        this.authStatusListener.next(true);
-        this.userId = response.userId;
-
-        const now = new Date();
-        const expirationDate = new Date(now.getTime() + expiresInDuration * 1000); // milisekunde
-        console.log(expirationDate);
-        console.log(token);
-        this.saveAuthData(token, expirationDate, this.userId);
-        this.router.navigate(['/']);
+          const expiresInDuration = response.expiresIn;
+          this.setAuthTimer(expiresInDuration);
+          this.isAuthenticated = true;
+          this.authStatusListener.next(true);
+          this.userId = response.userId;
+          const now = new Date();
+          const expirationDate = new Date(now.getTime() + expiresInDuration * 1000); // milisekunde
+          console.log(expirationDate);
+          console.log(token);
+          this.saveAuthData(token, expirationDate, this.userId);
+          if (response.pol === undefined) {
+            this.isInitiated = false;
+            this.isInitiatedListener.next(false);
+            this.router.navigate(['/questionare']);
+          } else {
+            this.isInitiated = true;
+            this.isInitiatedListener.next(true);
+            this.router.navigate(['/']);
+          }
         }
       }, error => {
         this.authStatusListener.next(false);

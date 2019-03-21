@@ -46,10 +46,12 @@ exports.userLogin = (req, res, next) => {
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
+    console.log(fetchedUser.apol);
     res.status(200).json({
       token: token,
       expiresIn: 3600,
-      userId: fetchedUser._id
+      userId: fetchedUser._id,
+      pol: fetchedUser.apol     //////////////////////////////
     })
   })
   .catch(err => {

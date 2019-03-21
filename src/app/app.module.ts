@@ -18,6 +18,8 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './auth/login/login.component';
 import { PostListComponent } from './posts/post-list.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { QuestionareComponent } from './questionare/questionare.component';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { SignupComponent } from './auth/signup/signup.component';
     HeaderComponent,
     LoginComponent,
     SignupComponent,
-    PostListComponent
+    PostListComponent,
+    QuestionareComponent
   ],
   imports: [
     BrowserModule,
