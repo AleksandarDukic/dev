@@ -1,1 +1,37 @@
-<h1>Sad cemo vas propitati</h1>
+<form (submit)="onInitiate(questionareForm)" #questionareForm="ngForm" width="100%" height="100%" >
+
+    <h2>Izaberite Pol</h2>
+    <input ngModel type="radio" name="gender" value="male" > Musko <br>
+    <input ngModel type="radio" name="gender" value="female" > Zensko <br>
+
+    <input ngModel type="number" name="weight"> Unesite Vasu Masu <br>
+
+    <input ngModel type="number" name="height"> Unesit Vasu Visinu <br>
+
+
+    <h2>Da li ste ikada trenirali</h2>
+    <input ngModel type="radio" name="ever" value="true" #ever="ngModel"> Da <br>
+    <input ngModel type="radio" name="ever" value="false" > Ne <br>
+    <div *ngIf="ever.valueChanges">
+      <h2>Da li ste trenirali u poslednjih 6 meseci</h2>
+      <input ngModel type="radio" name="mth" value="true" > Da <br>
+      <input ngModel type="radio" name="mth" value="false" > Ne <br>
+    </div>
+
+
+    <h2>Da li imate bolova u: </h2>
+    <input ngModel type="checkbox" name="neck" value="neck"> Vratu <br>
+    <input ngModel type="checkbox" name="shoulder" value="shoulder"> Ramenu <br>
+    <input ngModel type="checkbox" name="leg" value="leg" checked> Nozi <br>
+    <h2>Da li boloujete od: </h2>
+    <input ngModel type="checkbox" name="hemofylia" value="hemofylia"> Hemofilije <br>
+    <input ngModel type="checkbox" name="hernia" value="hernia"> Hernije <br>
+    <input ngModel type="checkbox" name="highpressure" value="highpressure" checked> Visokog pritiska<br>
+    <hr>
+    <input ngModel type="checkbox" name="smoker" value="smoker"> Da li ste pusac <br><hr>
+    <input ngModel type="checkbox" name="alch" value="alch"> Da li konzumirate alkohol<br><hr>
+    <input ngModel type="number" name="work" value="work"> Unesite broj radnih sati u toku nedelje<br>
+
+  <input  type="submit" value="submit"><br>
+
+</form>

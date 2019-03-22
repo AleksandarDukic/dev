@@ -4,16 +4,16 @@ const uniqueValidator = require("mongoose-unique-validator");
 const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, requred: true },
-  apol: { type: Boolean },
-  aVisina: { type: Number },
-  aTezina: { type: Number },
-  bIkada: { type: Boolean},
-  bZadnjih6: { type: Boolean},
-  cBolovi: { type: mongoose.Types.Decimal128 },
-  cBolesti: { type: mongoose.Types.Decimal128 },
-  dPusac: { type: Boolean },
-  dAlkohol: { type: Number },
-  dRadno: { type: Number },
+  gender: { type: String },
+  height: { type: Number },
+  weight: { type: Number },
+  ever: { type: Boolean},
+  mth: { type: Boolean},
+  hurt: { type: Number },
+  diss: { type: Number },
+  smoke: { type: Boolean },
+  alch: { type: Number },
+  work: { type: Number },
 });
 
 userSchema.plugin(uniqueValidator);

@@ -51,7 +51,7 @@ exports.userLogin = (req, res, next) => {
       token: token,
       expiresIn: 3600,
       userId: fetchedUser._id,
-      pol: fetchedUser.apol     //////////////////////////////
+      pol: fetchedUser.gender     //////////////////////////////
     })
   })
   .catch(err => {
@@ -59,5 +59,36 @@ exports.userLogin = (req, res, next) => {
       message: "Invalid authentication credentials"
     })
   })
+}
+
+exports.updateUser = (req, res ,next) => {
+  let fetchedUser = new User({
+    _id: req.params.id,
+    gender: req.body.gender,
+    height: req.body.height,
+    weight: req.body.weight,
+    ever: req.body.ever,
+    mth: req.body.mth,
+    hurt: req.body.hurt,
+    diss: req.body.diss,
+    smoke: req.body.smoke,
+    alch: req.body.alch,
+    work: req.body.work
+  });
+  User.updateOne(
+    { _id: fetchedUser._id }, fetchedUser
+  ).then(result => {
+    console.log(result);
+    if (result.n > 0) {
+      res.status(200).json({ message: 'Update successful!' })
+    } else {
+      res.status(401).json({ message: 'Not authorized' })
+    }
+  })
+  .catch(error => {
+    res.status(500).json({
+      message: "Couldn't update post!"
+    });
+  });
 }
 

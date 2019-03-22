@@ -94,6 +94,39 @@ export class AuthService {
       });
   }
 
+  initiate(
+    gender: string,
+    weight: number,
+    height: number,
+    ever: boolean,
+    mth: boolean,
+    hurt: number,
+    diss: number,
+    smoker: boolean,
+    alch: boolean,
+    work: number
+    ) {
+      const data = {
+        gender: gender,
+        weigh: weight,
+        height: height,
+        ever: ever,
+        mth: mth,
+        hurt: hurt,
+        diss: diss,
+        smoker: smoker,
+        alch: alch,
+        work: work
+      };
+    this.http
+    .put(BACKEND_URL + this.userId, data)
+    .subscribe( response => {
+      this.isInitiated = true;
+      this.isInitiatedListener.next(true);
+      this.router.navigate(['/']);
+    });
+  }
+
   autoAuthUser() {
     const authInformation = this.getAuthData();
     if (!authInformation) {
@@ -105,7 +138,7 @@ export class AuthService {
       this.token = authInformation.token;
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
-      this.setAuthTimer(expiresIn / 1000);      //authTimer radi sa sekundama pa delimo sa 1000
+      this.setAuthTimer(expiresIn / 1000);      // authTimer radi sa sekundama pa delimo sa 1000
       this.authStatusListener.next(true);
     }
   }
