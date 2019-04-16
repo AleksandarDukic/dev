@@ -28,8 +28,8 @@
     <input ngModel type="checkbox" name="hernia" value="hernia"> Hernije <br>
     <input ngModel type="checkbox" name="highpressure" value="highpressure" checked> Visokog pritiska<br>
     <hr>
-    <input ngModel type="checkbox" name="smoker" value="smoker"> Da li ste pusac <br><hr>
-    <input ngModel type="checkbox" name="alch" value="alch"> Da li konzumirate alkohol<br><hr>
+    <input type="checkbox" [(ngModel)]="filter1" (click)="filterData1()" name="smoker" > Da li ste pusac <br><hr>
+    <input type="checkbox" [(ngModel)]="filter2" (click)="filterData2()" name="alch" > Da li konzumirate alkohol<br><hr>
     <input ngModel type="number" name="work" value="work"> Unesite broj radnih sati u toku nedelje<br>
 
   <input  type="submit" value="submit"><br>

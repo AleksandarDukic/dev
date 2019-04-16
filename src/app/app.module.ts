@@ -15,9 +15,9 @@ import {
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { LoginComponent } from './auth/login/login.component';
+import { LoginComponent } from './login/login.component';
 import { PostListComponent } from './posts/post-list.component';
-import { SignupComponent } from './auth/signup/signup.component';
+import { SignupComponent } from './signup/signup.component';
 import { QuestionareComponent } from './questionare/questionare.component';
 
 

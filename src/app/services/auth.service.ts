@@ -19,6 +19,7 @@ export class AuthService {
 
   private isInitiatedListener = new Subject<boolean>();
   private isInitiated = false;
+  private isAdmin = false;
 
   getIsInitiatedListener() {
     return this.isInitiatedListener.asObservable();
@@ -26,6 +27,10 @@ export class AuthService {
 
   getIsInitated() {
     return this.isInitiated;
+  }
+
+  getIsAdmin() {
+    return this.isAdmin;
   }
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -60,7 +65,7 @@ export class AuthService {
   login(email: string, password: string) {
     const authData: AuthData = { email: email, password: password };
     this.http
-      .post<{ token: string, expiresIn: number, userId: string, pol:string }>(
+      .post<{ token: string, expiresIn: number, userId: string, pol: string, admin: boolean }>(
         BACKEND_URL + '/login',
         authData
       )
@@ -77,7 +82,7 @@ export class AuthService {
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000); // milisekunde
           console.log(expirationDate);
           console.log(token);
-          this.saveAuthData(token, expirationDate, this.userId);
+          this.saveAuthData(token, expirationDate, this.userId, response.admin );
           if (response.pol === undefined) {
             this.isInitiated = false;
             this.isInitiatedListener.next(false);
@@ -85,6 +90,9 @@ export class AuthService {
           } else {
             this.isInitiated = true;
             this.isInitiatedListener.next(true);
+            if (response.admin === true) {
+              this.isAdmin = true;
+            }
             this.router.navigate(['/']);
           }
         }
@@ -140,6 +148,9 @@ export class AuthService {
       this.userId = authInformation.userId;
       this.setAuthTimer(expiresIn / 1000);      // authTimer radi sa sekundama pa delimo sa 1000
       this.authStatusListener.next(true);
+      if (authInformation.admin === 'true') {
+        this.isAdmin = true;
+      }
     }
   }
 
@@ -148,6 +159,7 @@ export class AuthService {
     this.userId = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
+    this.isAdmin = false;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['/']);
@@ -160,29 +172,33 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string, admin: boolean) {
     localStorage.setItem('token', token);                         // skladisti se na principu key-value pairs
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
+    localStorage.setItem('admin', admin.toString());
   }
 
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
     localStorage.removeItem('userId');
+    localStorage.removeItem('admin');
   }
 
   private getAuthData() {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
     const userId = localStorage.getItem('userId');
-    if (!token || !expirationDate){
+    const admin = localStorage.getItem('admin');
+    if (!token || !expirationDate) {
       return;
     }
     return {
       token: token,
       expirationDate: new Date(expirationDate),
-      userId: userId
+      userId: userId,
+      admin: admin
     };
   }
 

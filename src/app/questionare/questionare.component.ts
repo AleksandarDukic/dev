@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   templateUrl: './questionare.component.html',
@@ -11,6 +11,17 @@ export class QuestionareComponent {
 
   hurt = 0x00000;
   diss = 0x00000;
+
+  filter1 = false;
+  filter2 = false;
+
+  filterData1() {
+    this.filter1 = !this.filter1;
+  }
+
+  filterData2() {
+    this.filter2 = !this.filter2;
+  }
 
   constructor(public authService: AuthService) {}
 
@@ -25,8 +36,8 @@ export class QuestionareComponent {
       form.value.mth,
       this.hurt,
       this.diss,
-      form.value.smoker,
-      form.value.alch,
+      this.filter1,
+      this.filter2,
       form.value.work
     );
   }

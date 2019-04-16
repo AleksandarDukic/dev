@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   templateUrl: './post-list.component.html',
@@ -11,6 +11,7 @@ export class PostListComponent implements OnInit {
 
   userIsAuthenticated = false;
   userIsInitated = false;
+  userIsAdmin = false;
 
   private authStatusSub: Subscription;
   private initiatedStatusSub: Subscription;
@@ -20,6 +21,7 @@ export class PostListComponent implements OnInit {
 ngOnInit() {
   this.userIsAuthenticated = this.authService.getIsAuth();
   this.userIsInitated = this.authService.getIsInitated();
+  this.userIsAdmin = this.authService.getIsAdmin();
 
   this.authStatusSub = this.authService.getAuthStatusListener()
     .subscribe(isAuthenticated => {

@@ -1,6 +1,7 @@
 <mat-toolbar color="primary">
   <span>
-    <a routerLink="/">MyMessages</a>
+    <a *ngIf="!userIsInitiated" >MyMessages</a>
+    <a *ngIf="userIsInitiated"  routerLink="/">MyMessages</a>
   </span>
   <span class="spacer"></span>
   <ul>
