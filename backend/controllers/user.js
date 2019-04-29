@@ -33,7 +33,6 @@ exports.userLogin = (req, res, next) => {
         message: "Auth failed"
       });
     }
-    console.log(user);
     fetchedUser = user;
     console.log(fetchedUser);
     return bcrypt.compare(req.body.password, user.password);
@@ -96,6 +95,45 @@ exports.updateUser = (req, res ,next) => {
   .catch(error => {
     res.status(500).json({
       message: "Couldn't update post!"
+    });
+  });
+}
+
+exports.getUser = (req, res, next) => {
+  let fetchedUser;
+  console.log('!!!!!!!REQ userData!!!!!!!!!!!!' + req.userData.email);
+  User.findOne(
+    { email: req.userData.email }
+  )
+  .then(result => {
+
+    let  gender = result.gender;
+    let  weight = result.weight;
+    let  height = result.height;
+    let  ever = result.ever;
+    let  mth = result.mth;
+    let  hurt = result.hurt;
+    let  diss = result.diss;
+    let  alch = result.alch;
+    let  smoke = result.smoke;
+    let  work = result.work;
+
+    res.status(200).json({
+      gender: gender,
+      weight: weight,
+      height: height,
+      ever: ever,
+      mth: mth,
+      hurt: hurt,
+      diss: diss,
+      alch: alch,
+      smoke: smoke,
+      work: work
+     });
+  })
+  .catch(error => {
+    res.status(500).json({
+      message: "User not found"
     });
   });
 }

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
-
+import { StatsData } from './stats-data.model';
 import { AuthData } from './auth-data.model';
 
 const BACKEND_URL = environment.apiUrl + '/user/';
@@ -16,10 +16,29 @@ export class AuthService {
   private tokenTimer: any;
   private userId: string;
   private authStatusListener = new Subject<boolean>();
-
   private isInitiatedListener = new Subject<boolean>();
   private isInitiated = false;
   private isAdmin = false;
+  private userStats: StatsData;
+  private statsUpdated = new Subject<{
+    userStats: StatsData
+  }>();
+
+  // gender: string;
+  // weight: number;
+  // height: number;
+  // ever: boolean;
+  // mth: boolean;
+  // hurt: number;
+  // diss: number;
+  // alch: boolean;
+  // smoke: boolean;
+  // work: number;
+
+
+
+
+
 
   getIsInitiatedListener() {
     return this.isInitiatedListener.asObservable();
@@ -49,6 +68,10 @@ export class AuthService {
 
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
+  }
+
+  getStatsUpdatedListener() {
+    return this.statsUpdated.asObservable();
   }
 
   createUser(email: string, password: string) {
@@ -110,19 +133,19 @@ export class AuthService {
     mth: boolean,
     hurt: number,
     diss: number,
-    smoker: boolean,
+    smoke: boolean,
     alch: boolean,
     work: number
     ) {
       const data = {
         gender: gender,
-        weigh: weight,
+        weight: weight,
         height: height,
         ever: ever,
         mth: mth,
         hurt: hurt,
         diss: diss,
-        smoker: smoker,
+        smoke: smoke,
         alch: alch,
         work: work
       };
@@ -133,6 +156,34 @@ export class AuthService {
       this.isInitiatedListener.next(true);
       this.router.navigate(['/']);
     });
+  }
+
+  getProfile() {
+    return this.http
+    .get<{
+      gender: string,
+      weight: number,
+      height: number,
+      ever: boolean,
+      mth: boolean,
+      hurt: number,
+      diss: number,
+      alch: boolean,
+      smoke: boolean,
+      work: number
+    }>(
+      BACKEND_URL + 'getuser'
+    )
+    .subscribe(response => {
+
+      this.userStats = response;
+
+      this.statsUpdated.next({
+        userStats: this.userStats
+      });
+    }, error => {
+      console.log(error);
+    })
   }
 
   autoAuthUser() {
@@ -153,6 +204,7 @@ export class AuthService {
       }
     }
   }
+
 
   logout() {
     this.token = null;

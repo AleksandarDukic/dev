@@ -19,6 +19,10 @@ import { LoginComponent } from './login/login.component';
 import { PostListComponent } from './posts/post-list.component';
 import { SignupComponent } from './signup/signup.component';
 import { QuestionareComponent } from './questionare/questionare.component';
+import { ProfileComponent } from './profile/profile.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { ExcercisesComponent } from './excercises/excercises.component';
+import { AuthInterceptor } from './services/auth-interceptor';
 
 
 @NgModule({
@@ -28,7 +32,10 @@ import { QuestionareComponent } from './questionare/questionare.component';
     LoginComponent,
     SignupComponent,
     PostListComponent,
-    QuestionareComponent
+    QuestionareComponent,
+    ProfileComponent,
+    CalendarComponent,
+    ExcercisesComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +50,9 @@ import { QuestionareComponent } from './questionare/questionare.component';
     MatExpansionModule,
     MatProgressSpinnerModule,
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

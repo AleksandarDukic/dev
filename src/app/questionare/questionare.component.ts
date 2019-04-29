@@ -26,8 +26,8 @@ export class QuestionareComponent {
   constructor(public authService: AuthService) {}
 
   onInitiate(form: NgForm) {
-    this.hurt = 0x00001 * form.value.neck + 0x00010 * form.value.shoulder + 0x00100 * form.value.leg;
-    this.diss = 0x00001 * form.value.hemofylia + 0x00010 * form.value.hernia + 0x00100 * form.value.highpressure;
+    this.hurt = 0b00001 * form.value.neck + 0b00010 * form.value.shoulder + 0b00100 * form.value.leg;
+    this.diss = 0b00001 * form.value.hemofylia + 0b00010 * form.value.hernia + 0b00100 * form.value.highpressure;
     this.authService.initiate(
       form.value.gender,
       form.value.weight,
