@@ -9,26 +9,26 @@ import { AuthService } from '../services/auth.service';
 
 export class PostListComponent implements OnInit {
 
-  userIsAuthenticated = false;
-  userIsInitated = false;
-  userIsAdmin = false;
+  isAuthenticated = false;
+  isInitated = false;
+  isAdmin = false;
 
-  private authStatusSub: Subscription;
-  private initiatedStatusSub: Subscription;
+  private isAuthenticatedSub: Subscription;
+  private isInitiatedSub: Subscription;
 
   constructor(private authService: AuthService) {}
 
 ngOnInit() {
-  this.userIsAuthenticated = this.authService.getIsAuth();
-  this.userIsInitated = this.authService.getIsInitated();
-  this.userIsAdmin = this.authService.getIsAdmin();
+  this.isAuthenticated = this.authService.getIsAuth();
+  this.isInitated = this.authService.getIsInitated();
+  this.isAdmin = this.authService.getIsAdmin();
 
-  this.authStatusSub = this.authService.getAuthStatusListener()
+  this.isAuthenticatedSub = this.authService.getIsAuthenticatedListener()
     .subscribe(isAuthenticated => {
-      this.userIsAuthenticated = isAuthenticated;
+      this.isAuthenticated = isAuthenticated;
     });
 
-  if (!this.userIsInitated && this.userIsAuthenticated) {
+  if (!this.isInitated && this.isAuthenticated) {
     alert('you are not initiated');
   }
 

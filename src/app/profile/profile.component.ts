@@ -14,9 +14,9 @@ const BACKEND_URL = environment.apiUrl + '/user';
 
 export class ProfileComponent implements OnInit, OnDestroy {
 
-  userIsAuthenticated: boolean;
-  userIsInitated: boolean;
-  userIsAdmin: boolean;
+  isAuthenticated: boolean;
+  isInitated: boolean;
+  isAdmin: boolean;
   private statsUpdatedSub: Subscription;
 
   gender: string;
@@ -30,8 +30,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   smoke: boolean;
   work: number;
 
-  private authStatusSub: Subscription;
-  private initiatedStatusSub: Subscription;
+  private isAuthenticatedSub: Subscription;
+  private isInitiatedSub: Subscription;
   private statsSub: Subscription;
 
   constructor(private authService: AuthService, private http: HttpClient) {}
@@ -83,13 +83,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userIsAuthenticated = this.authService.getIsAuth();
-    this.userIsInitated = this.authService.getIsInitated();
-    this.userIsAdmin = this.authService.getIsAdmin();
+    this.isAuthenticated = this.authService.getIsAuth();
+    this.isInitated = this.authService.getIsInitated();
+    this.isAdmin = this.authService.getIsAdmin();
 
-    this.authStatusSub = this.authService.getAuthStatusListener()
+    this.isAuthenticatedSub = this.authService.getIsAuthenticatedListener()
       .subscribe(isAuthenticated => {
-        this.userIsAuthenticated = isAuthenticated;
+        this.isAuthenticated = isAuthenticated;
       });
 
     this.authService.getProfile();

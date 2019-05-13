@@ -15,29 +15,15 @@ export class AuthService {
   private token: string;
   private tokenTimer: any;
   private userId: string;
-  private authStatusListener = new Subject<boolean>();
+  private isAuthenticatedListener = new Subject<boolean>();
   private isInitiatedListener = new Subject<boolean>();
+  private isAdminListener = new Subject<boolean>();
   private isInitiated = false;
   private isAdmin = false;
   private userStats: StatsData;
   private statsUpdated = new Subject<{
     userStats: StatsData
   }>();
-
-  // gender: string;
-  // weight: number;
-  // height: number;
-  // ever: boolean;
-  // mth: boolean;
-  // hurt: number;
-  // diss: number;
-  // alch: boolean;
-  // smoke: boolean;
-  // work: number;
-
-
-
-
 
 
   getIsInitiatedListener() {
@@ -50,6 +36,10 @@ export class AuthService {
 
   getIsAdmin() {
     return this.isAdmin;
+  }
+
+  getIsAdminListener() {
+    return this.isAdminListener.asObservable();
   }
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -66,8 +56,8 @@ export class AuthService {
     return this.userId;
   }
 
-  getAuthStatusListener() {
-    return this.authStatusListener.asObservable();
+  getIsAuthenticatedListener() {
+    return this.isAuthenticatedListener.asObservable();
   }
 
   getStatsUpdatedListener() {
@@ -99,7 +89,7 @@ export class AuthService {
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;
-          this.authStatusListener.next(true);
+          this.isAuthenticatedListener.next(true);
           this.userId = response.userId;
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000); // milisekunde
@@ -115,12 +105,13 @@ export class AuthService {
             this.isInitiatedListener.next(true);
             if (response.admin === true) {
               this.isAdmin = true;
+              this.isAdminListener.next(true);
             }
             this.router.navigate(['/']);
           }
         }
       }, error => {
-        this.authStatusListener.next(false);
+        this.isAuthenticatedListener.next(false);
         console.log(error);
       });
   }
@@ -198,7 +189,7 @@ export class AuthService {
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
       this.setAuthTimer(expiresIn / 1000);      // authTimer radi sa sekundama pa delimo sa 1000
-      this.authStatusListener.next(true);
+      this.isAuthenticatedListener.next(true);
       if (authInformation.admin === 'true') {
         this.isAdmin = true;
       }
@@ -210,7 +201,7 @@ export class AuthService {
     this.token = null;
     this.userId = null;
     this.isAuthenticated = false;
-    this.authStatusListener.next(false);
+    this.isAuthenticatedListener.next(false);
     this.isAdmin = false;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();

@@ -1,40 +1,28 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { VidService } from '../services/vid.service';
-import { VidData } from '../services/vid-data.model';
 
 @Component({
-  templateUrl: './excercises.component.html',
-  styleUrls: ['./excercises.component.css']
+  templateUrl: './addvid.component.html',
+  styleUrls: ['./addvid.component.css']
 })
 
-export class ExcercisesComponent implements OnInit, OnDestroy {
+export class AddvidComponent implements OnInit, OnDestroy {
 
   isAuthenticated: boolean;
   isInitated: boolean;
   isAdmin: boolean;
 
+
   private isAuthenticatedSub: Subscription;
   private isInitatedSub: Subscription;
 
-  vids: VidData[] = [];
-  private vidsSub: Subscription;
-
   constructor(private authService: AuthService, private vidService: VidService) {}
 
-  player: YT.Player;
-  id = '09JslnY7W_k';
-
-  savePlayer(player) {
-    this.player = player;
-    console.log('player instance', player);
-  }
-  onStateChange(event) {
-    console.log('player state', event.data);
-  }
-
   ngOnInit() {
+
     this.isAuthenticated = this.authService.getIsAuth();
     this.isInitated = this.authService.getIsInitated();
     this.isAdmin = this.authService.getIsAdmin();
@@ -42,20 +30,19 @@ export class ExcercisesComponent implements OnInit, OnDestroy {
     this.isAuthenticatedSub = this.authService.getIsAuthenticatedListener()
       .subscribe(isAuthenticated => {
         this.isAuthenticated = isAuthenticated;
-      });
+    });
 
-    this.vidService.getVideos();
-    this.vidsSub = this.vidService.
-      getVidsUpdatedListener()
-        .subscribe((vidData) => {
-          this.vids = vidData.vids;
-        });
+  }
 
-
+  onAdd(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+    this.vidService.addVideo(form.value.name, form.value.link, form.value.note, form.value.tip);
+    console.log(form.value.name, form.value.link, form.value.note, form.value.tip);
   }
 
   ngOnDestroy() {
     this.isAuthenticatedSub.unsubscribe();
-    this.vidsSub.unsubscribe();
   }
 }

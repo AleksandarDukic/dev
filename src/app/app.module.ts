@@ -9,7 +9,8 @@ import {
   MatButtonModule,
   MatToolbarModule,
   MatExpansionModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatSelectModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,7 +24,12 @@ import { ProfileComponent } from './profile/profile.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { ExcercisesComponent } from './excercises/excercises.component';
 import { AuthInterceptor } from './services/auth-interceptor';
-
+import { AddvidComponent } from './addvid/addvid.component';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+//
+import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
+import { CalendarModule } from 'primeng/calendar';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -35,7 +41,8 @@ import { AuthInterceptor } from './services/auth-interceptor';
     QuestionareComponent,
     ProfileComponent,
     CalendarComponent,
-    ExcercisesComponent
+    ExcercisesComponent,
+    AddvidComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +55,10 @@ import { AuthInterceptor } from './services/auth-interceptor';
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
+    MatSelectModule,
     MatProgressSpinnerModule,
+    CalendarModule,
+    NgxYoutubePlayerModule.forRoot()      // od NGX
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
@@ -56,3 +66,5 @@ import { AuthInterceptor } from './services/auth-interceptor';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule);  /// Ovo je od NGX-a

@@ -1,31 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription, from } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+
 
 @Component({
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  styleUrls: [
+  './calendar.component.css',
+],
+
 })
 
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
 
-  userIsAuthenticated: boolean;
-  userIsInitated: boolean;
-  userIsAdmin: boolean;
+  isAuthenticated: boolean;
+  isInitated: boolean;
+  isAdmin: boolean;
 
-  private authStatusSub: Subscription;
-  private initiatedStatusSub: Subscription;
+  public date: Date;
+
+
+  private isAuthenticatedSub: Subscription;
+  private isInitiatedSub: Subscription;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.userIsAuthenticated = this.authService.getIsAuth();
-    this.userIsInitated = this.authService.getIsInitated();
-    this.userIsAdmin = this.authService.getIsAdmin();
 
-    this.authStatusSub = this.authService.getAuthStatusListener()
+    this.isAuthenticated = this.authService.getIsAuth();
+    this.isInitated = this.authService.getIsInitated();
+    this.isAdmin = this.authService.getIsAdmin();
+
+    this.isAuthenticatedSub = this.authService.getIsAuthenticatedListener()
       .subscribe(isAuthenticated => {
-        this.userIsAuthenticated = isAuthenticated;
+        this.isAuthenticated = isAuthenticated;
       });
+  }
+
+  ngOnDestroy() {
+    this.isAuthenticatedSub.unsubscribe();
   }
 }

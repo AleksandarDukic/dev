@@ -1,0 +1,50 @@
+<H1>Add Video</H1>
+<mat-card>
+  <form (submit)="onAdd(addVidForm)" #addVidForm="ngForm">
+    <mat-form-field>
+      <input
+        type="text"
+        matInput
+        name="name"
+        ngModel
+        placeholder="Name of the excercisse"
+        #nameInput="ngModel"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        type="text"
+        matInput
+        name="link"
+        ngModel
+        placeholder="Please add the link to the video"
+        #linkInput="ngModel"
+        required
+      >
+      <mat-error *ngIf="linkInput.invalid">Please enter a valid link</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        type="text"
+        matInput
+        name="note"
+        ngModel
+        placeholder="Please add a note to the video"
+        #noteInput="ngModel">
+      </textarea>
+      <mat-error *ngIf="noteInput.invalid">Please enter a valid note</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select ngModel name="tip" placeholder="Select the type of excercise">
+        <mat-option value="1">Warm-up</mat-option>
+        <mat-option value="2">Core</mat-option>
+        <mat-option value="3">Strech</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+    mat-raised-button
+    color="accent"
+    type="submit">Save Video
+  </button>
+  </form>
+</mat-card>

@@ -1,1 +1,17 @@
 <H1>excercises</H1>
+<ul>
+  <li *ngFor="let vid of vids">
+    <div class="{{ vid.type }}">
+      <div margin="auto">
+        <youtube-player
+        [videoId]="vid.link"
+        (ready)="savePlayer($event)"
+        (change)="onStateChange($event)"
+        ></youtube-player>
+      </div>
+      <h1>{{ vid.name }}</h1>
+      <h2>{{ vid.note }}</h2>
+      <h3>{{ vid.type }}</h3>
+    </div>
+  </li>
+</ul>

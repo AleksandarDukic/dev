@@ -10,25 +10,32 @@ import { AuthService } from '../services/auth.service';
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
-  userIsAuthenticated = false;
-  private authListenerSubs: Subscription;
-  userIsInitiated = false;
-  private initiatedListenerSubs: Subscription;
-
+  isAuthenticated = false;
+  private isAuthenticatedSub: Subscription;
+  isInitiated = false;
+  private isInitiatedSub: Subscription;
+  isAdmin = false;
+  private isAdminSub: Subscription;
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.userIsAuthenticated = this.authService.getIsAuth();
-    this.authListenerSubs = this.authService
-      .getAuthStatusListener()
+    this.isAuthenticated = this.authService.getIsAuth();
+    this.isAuthenticatedSub = this.authService
+      .getIsAuthenticatedListener()
       .subscribe(isAuthenticated => {
-        this.userIsAuthenticated = isAuthenticated;
+        this.isAuthenticated = isAuthenticated;
       });
-    this.userIsInitiated = this.authService.getIsInitated();
-    this.initiatedListenerSubs = this.authService
+    this.isInitiated = this.authService.getIsInitated();
+    this.isInitiatedSub = this.authService
       .getIsInitiatedListener()
       .subscribe(isInitiated => {
-        this.userIsInitiated = isInitiated;
+        this.isInitiated = isInitiated;
+      });
+    this.isAdmin = this.authService.getIsAdmin();
+    this.isAdminSub = this.authService
+      .getIsAdminListener()
+      .subscribe(isAdmin => {
+        this.isAdmin = isAdmin;
       });
   }
 
@@ -37,7 +44,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.authListenerSubs.unsubscribe();
+    this.isAuthenticatedSub.unsubscribe();
+    this.isInitiatedSub.unsubscribe();
+    this.isAdminSub.unsubscribe();
   }
 
 }
