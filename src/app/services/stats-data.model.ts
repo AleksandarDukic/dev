@@ -9,4 +9,6 @@ export interface StatsData {
   alch: boolean;
   smoke: boolean;
   work: number;
+  pending: boolean;
+  training: boolean;
 }

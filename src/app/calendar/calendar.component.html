@@ -1,3 +1,4 @@
 <H1>calendar</H1>
   <p-calendar [(ngModel)]="date" [inline]="true"></p-calendar>
   <h1>{{this.date}}</h1>
+<button *ngIf="!(this.pending || this.training)" (click)="setRecord()">Schedule</button>

@@ -1,0 +1,7 @@
+.center {
+  width: 50%;
+  text-align: center;
+  display: inline-block;
+  margin-left: 25%;
+  margin-right: 25%;
+}

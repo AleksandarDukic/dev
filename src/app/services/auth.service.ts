@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { StatsData } from './stats-data.model';
 import { AuthData } from './auth-data.model';
@@ -23,6 +24,10 @@ export class AuthService {
   private userStats: StatsData;
   private statsUpdated = new Subject<{
     userStats: StatsData
+  }>();
+  private pending: { userId: string, email: string} [] = [];
+  private pendingUpdated = new Subject<{
+    pending: { userId: string, email: string} []
   }>();
 
 
@@ -78,7 +83,7 @@ export class AuthService {
   login(email: string, password: string) {
     const authData: AuthData = { email: email, password: password };
     this.http
-      .post<{ token: string, expiresIn: number, userId: string, pol: string, admin: boolean }>(
+      .post<{ token: string, expiresIn: number, userId: string, pol: string, admin: boolean, pending: boolean, training: boolean }>(
         BACKEND_URL + '/login',
         authData
       )
@@ -95,7 +100,7 @@ export class AuthService {
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000); // milisekunde
           console.log(expirationDate);
           console.log(token);
-          this.saveAuthData(token, expirationDate, this.userId, response.admin );
+          this.saveAuthData(token, expirationDate, this.userId, response.admin, response.pending, response.training );
           if (response.pol === undefined) {
             this.isInitiated = false;
             this.isInitiatedListener.next(false);
@@ -161,7 +166,9 @@ export class AuthService {
       diss: number,
       alch: boolean,
       smoke: boolean,
-      work: number
+      work: number,
+      pending: boolean,
+      training: boolean
     }>(
       BACKEND_URL + 'getuser'
     )
@@ -174,8 +181,79 @@ export class AuthService {
       });
     }, error => {
       console.log(error);
-    })
+    });
   }
+
+  getPending() {
+    return this.http
+      .get<{
+        message: string,
+        users: any
+      }>(
+        BACKEND_URL + 'getpending'
+      )
+      .pipe(
+        map((responseData) => {
+          return {
+            users: responseData.users.map(user => {
+              return {
+                userId: user._id,
+                email: user.email
+            };
+            })
+          };
+        })
+      )
+      .subscribe(transfornedResponseData => {
+        this.pending = transfornedResponseData.users;
+        this.pendingUpdated.next({
+          pending: [...this.pending]
+        });
+      });
+  }
+
+  getPendingUpdatedListener() {
+    return this.pendingUpdated.asObservable();
+  }
+
+
+  /*.pipe(
+    map((responseData) => {
+      return {
+        vids: responseData.vids.map(vid => {
+          let mod = vid.type;
+          switch (vid.type) {
+            case 1: {
+              mod = 'warmup';
+              break;
+            }
+            case 2: {
+              mod = 'core';
+              break;
+            }
+            case 3: {
+              mod = 'strech';
+              break;
+            }
+          }
+          return {
+            name: vid.name,
+            link: vid.link,
+            note: vid.note,
+            type: mod
+          };
+        })
+      };
+    })
+  )
+  .subscribe(transformedResponseData => {
+    this.vids = transformedResponseData.vids;
+    this.vidsUpdated.next({
+      vids: [...this.vids]
+    });
+  });
+}
+*/
 
   autoAuthUser() {
     const authInformation = this.getAuthData();
@@ -215,11 +293,13 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string, admin: boolean) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string, admin: boolean, pending: boolean, training: boolean) {
     localStorage.setItem('token', token);                         // skladisti se na principu key-value pairs
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
     localStorage.setItem('admin', admin.toString());
+    localStorage.setItem('pending', pending.toString());
+    localStorage.setItem('training', training.toString());
   }
 
   private clearAuthData() {
@@ -227,6 +307,8 @@ export class AuthService {
     localStorage.removeItem('expiration');
     localStorage.removeItem('userId');
     localStorage.removeItem('admin');
+    localStorage.removeItem('pending');
+    localStorage.removeItem('training');
   }
 
   private getAuthData() {
@@ -234,6 +316,8 @@ export class AuthService {
     const expirationDate = localStorage.getItem('expiration');
     const userId = localStorage.getItem('userId');
     const admin = localStorage.getItem('admin');
+    const pending = localStorage.getItem('pending');
+    const training = localStorage.getItem('training');
     if (!token || !expirationDate) {
       return;
     }
@@ -241,7 +325,9 @@ export class AuthService {
       token: token,
       expirationDate: new Date(expirationDate),
       userId: userId,
-      admin: admin
+      admin: admin,
+      pending: pending,
+      training: training
     };
   }
 

@@ -1,0 +1,29 @@
+<div class="center">
+  <div class="center">
+  <p-listbox class="center" [options]="pending" [(ngModel)]="selected">
+    <p-header>
+      <i class="fa fa-car"></i>
+      List of People Pending for a Training
+    </p-header>
+    <ng-template let-pending let-i="index" pTemplate="item">
+      <div class="ui-helper-clearfix" (click)=onClick(pending.userId,pending.email)>
+        <p>{{pending.email}}</p><br>
+    </div>
+    </ng-template>
+    <p-footer>
+      Selected: {{this.selected1}}
+  </p-footer>
+</p-listbox>
+</div>
+<div style="display:flex">
+<div>
+lista svih trening
+</div>
+<div>
+lista specificnog treninga
+</div>
+</div>
+<div style="display:flex">
+drag n drio
+</div>
+</div>

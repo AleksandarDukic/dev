@@ -1,4 +1,35 @@
-<H1>excercises</H1>
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+</head>
+<br>
+<div class="flex-container-dumbell">
+  <h3>Excercises are spearated by color into three categories: </h3><br>
+  <i class='fas fa-dumbbell' style='font-size:48px;color:rgb(247, 204, 14)'></i><p>WARM-UP</p>
+  <i class='fas fa-dumbbell' style='font-size:48px;color:rgb(243, 62, 7)'></i><p>CORE</p>
+  <i class='fas fa-dumbbell' style='font-size:48px;color:rgb(18, 192, 27)'></i><p>STRECH</p>
+</div>
+<br>
+<p-virtualScroller [value]="vids" scrollHeight="750px" [itemSize]="">
+  <ng-template pTemplate="item" let-vids>
+    <div class="{{ vids.type }}">
+      <p class="naslov">{{ vids.name }}<p><br>
+      <div class=flex-container>
+        <div display="inline" width="100%" height="100%" float="left" >
+          <youtube-player
+          [videoId]="vids.link"
+          (ready)="savePlayer($event)"
+          (change)="onStateChange($event)"
+          ></youtube-player>
+        </div>
+        <div display="inline">
+            <p>{{ vids.note }}</p>
+            <p>{{ vids.type }}</p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-virtualScroller>
+<!--
 <ul>
   <li *ngFor="let vid of vids">
     <div class="{{ vid.type }}">
@@ -15,3 +46,4 @@
     </div>
   </li>
 </ul>
+-->

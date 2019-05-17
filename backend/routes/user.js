@@ -11,4 +11,7 @@ router.get("/getuser", checkAuth, UserController.getUser);
 
 router.put("/:id", UserController.updateUser);
 
+router.get("/getpending", checkAuth, UserController.getPending);
+
 module.exports = router;
+

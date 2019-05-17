@@ -15,6 +15,8 @@ const userSchema = mongoose.Schema({
   smoke: { type: Boolean },
   alch: { type: Boolean },
   work: { type: Number },
+  pending: {type : Boolean },
+  training: {type : Boolean }
 });
 
 userSchema.plugin(uniqueValidator);

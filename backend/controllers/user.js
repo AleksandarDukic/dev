@@ -57,7 +57,9 @@ exports.userLogin = (req, res, next) => {
       expiresIn: 3600,
       userId: fetchedUser._id,
       pol: fetchedUser.gender,     //////////////////////////////
-      admin: admin
+      admin: admin,
+      pending: fetchedUser.pending,
+      training: fetchedUser.training
     })
   })
   .catch(err => {
@@ -80,7 +82,9 @@ exports.updateUser = (req, res ,next) => {
     diss: req.body.diss,
     smoke: req.body.smoke,
     alch: req.body.alch,
-    work: req.body.work
+    work: req.body.work,
+    pending: false,
+    training: false
   });
   User.updateOne(
     { _id: fetchedUser._id }, fetchedUser
@@ -107,16 +111,18 @@ exports.getUser = (req, res, next) => {
   )
   .then(result => {
 
-    let  gender = result.gender;
-    let  weight = result.weight;
-    let  height = result.height;
-    let  ever = result.ever;
-    let  mth = result.mth;
-    let  hurt = result.hurt;
-    let  diss = result.diss;
-    let  alch = result.alch;
-    let  smoke = result.smoke;
-    let  work = result.work;
+    let gender = result.gender;
+    let weight = result.weight;
+    let height = result.height;
+    let ever = result.ever;
+    let mth = result.mth;
+    let hurt = result.hurt;
+    let diss = result.diss;
+    let alch = result.alch;
+    let smoke = result.smoke;
+    let work = result.work;
+    let pending = result.pending;
+    let training = result.training
 
     res.status(200).json({
       gender: gender,
@@ -128,7 +134,9 @@ exports.getUser = (req, res, next) => {
       diss: diss,
       alch: alch,
       smoke: smoke,
-      work: work
+      work: work,
+      pending: pending,
+      training: training
      });
   })
   .catch(error => {
@@ -138,3 +146,17 @@ exports.getUser = (req, res, next) => {
   });
 }
 
+exports.getPending = (req, res, next) => {
+  User.find({pending: true})
+    .then(result => {
+      res.status(200).json({
+        message: "Pending fetched successfully",
+        users: result
+      })
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "Fetching pending failed"
+      })
+    })
+}

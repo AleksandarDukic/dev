@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, from } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { RecordService } from '../services/record.service';
 
 
 @Component({
@@ -18,12 +19,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
 
   public date: Date;
-
+  private pending: boolean;
+  private training: boolean;
 
   private isAuthenticatedSub: Subscription;
   private isInitiatedSub: Subscription;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private recordService: RecordService) {}
 
   ngOnInit() {
 
@@ -35,8 +37,25 @@ export class CalendarComponent implements OnInit, OnDestroy {
       .subscribe(isAuthenticated => {
         this.isAuthenticated = isAuthenticated;
       });
-  }
 
+      const status = localStorage.getItem('pending');
+      if (status === 'false') {
+        this.pending = false;
+      } else {
+        this.pending = true;
+        const status1 = localStorage.getItem('training');
+        if (status1 === 'false') {
+          this.training = false;
+        } else {
+          this. training = true;
+        }
+      }
+
+  }
+  setRecord() {
+    const date1 = new Date(this.date.getTime() + 1000 * 3600 * 2);
+    this.recordService.createRecord(date1, localStorage.getItem('userId'));
+  }
   ngOnDestroy() {
     this.isAuthenticatedSub.unsubscribe();
   }

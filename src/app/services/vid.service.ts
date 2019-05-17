@@ -21,7 +21,7 @@ export class VidService {
 
   addVideo(name: string, link: string, note: string, type: string) {
 
-    const vidData: VidData = { name: name, link: link, note: note, type: type }
+    const vidData: VidData = { name: name, link: link, note: note, type: type };
 
     console.log(vidData.name, vidData.link, vidData.note, vidData.type);
     this.http

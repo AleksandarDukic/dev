@@ -23,13 +23,17 @@ import { QuestionareComponent } from './questionare/questionare.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { ExcercisesComponent } from './excercises/excercises.component';
-import { AuthInterceptor } from './services/auth-interceptor';
+import { SchedulingComponent } from './scheduling/scheduling.component';
 import { AddvidComponent } from './addvid/addvid.component';
+import { AuthInterceptor } from './services/auth-interceptor';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 //
 import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 import { CalendarModule } from 'primeng/calendar';
 import {CommonModule} from '@angular/common';
+import {VirtualScrollerModule} from 'primeng/virtualscroller';
+import {ListboxModule} from 'primeng/listbox';
+import {SelectItem} from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -43,6 +47,7 @@ import {CommonModule} from '@angular/common';
     CalendarComponent,
     ExcercisesComponent,
     AddvidComponent,
+    SchedulingComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +63,9 @@ import {CommonModule} from '@angular/common';
     MatSelectModule,
     MatProgressSpinnerModule,
     CalendarModule,
-    NgxYoutubePlayerModule.forRoot()      // od NGX
+    NgxYoutubePlayerModule.forRoot(),      // od NGX
+    VirtualScrollerModule,
+    ListboxModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
