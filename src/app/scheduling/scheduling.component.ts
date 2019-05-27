@@ -6,6 +6,7 @@ import { VidService } from '../services/vid.service';
 import { RecordService } from '../services/record.service';
 import { VidData } from '../services/vid-data.model';
 import {SelectItem} from 'primeng/api';
+import { RecordData } from '../services/record-data.model';
 
 
 @Component({
@@ -19,12 +20,19 @@ export class SchedulingComponent implements OnInit, OnDestroy {
   pending: any [] = [];
   private pendingSub: Subscription;
   private vids: VidData[] = [];
+  private vidsSub: Subscription;
 
 
   constructor(private authService: AuthService, private vidService: VidService, private recordService: RecordService) {}
 
   ngOnInit() {
+    this.vidService.getVideos();
     this.authService.getPending();
+    this.vidsSub = this.vidService.
+      getVidsUpdatedListener()
+        .subscribe((vidsData) => {
+          this.vids = vidsData.vids;
+        });
     this.pendingSub = this.authService.
       getPendingUpdatedListener()
         .subscribe((userData) => {

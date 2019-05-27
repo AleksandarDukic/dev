@@ -30,6 +30,7 @@ export class AuthService {
     pending: { userId: string, email: string} []
   }>();
 
+  constructor(private http: HttpClient, private router: Router) {}
 
   getIsInitiatedListener() {
     return this.isInitiatedListener.asObservable();
@@ -47,7 +48,6 @@ export class AuthService {
     return this.isAdminListener.asObservable();
   }
 
-  constructor(private http: HttpClient, private router: Router) {}
 
   getToken() {
     return this.token;
@@ -100,7 +100,7 @@ export class AuthService {
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000); // milisekunde
           console.log(expirationDate);
           console.log(token);
-          this.saveAuthData(token, expirationDate, this.userId, response.admin, response.pending, response.training );
+          this.saveAuthData(token, expirationDate, this.userId, response.admin, response.pending || false, response.training || false );
           if (response.pol === undefined) {
             this.isInitiated = false;
             this.isInitiatedListener.next(false);
@@ -143,7 +143,9 @@ export class AuthService {
         diss: diss,
         smoke: smoke,
         alch: alch,
-        work: work
+        work: work,
+        pending: false,
+        training: false
       };
     this.http
     .put(BACKEND_URL + this.userId, data)
