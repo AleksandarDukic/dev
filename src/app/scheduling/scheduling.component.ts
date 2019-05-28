@@ -7,6 +7,9 @@ import { RecordService } from '../services/record.service';
 import { VidData } from '../services/vid-data.model';
 import {SelectItem} from 'primeng/api';
 import { RecordData } from '../services/record-data.model';
+import {DragDropModule} from 'primeng/dragdrop';
+import {TableModule} from 'primeng/table';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -19,9 +22,19 @@ export class SchedulingComponent implements OnInit, OnDestroy {
   selected1: string;
   pending: any [] = [];
   private pendingSub: Subscription;
-  private vids: VidData[] = [];
-  private vidsSub: Subscription;
+  n: number [];
+  s: number [];
+  w: number [];
+  vids: VidData[] = [];
+  selectedVids: VidData[] = [];
+  record: RecordData;
+  draggedVid: VidData;
 
+  qq: any;
+  ww: any;
+  ee: any;
+
+  private vidsSub: Subscription;
 
   constructor(private authService: AuthService, private vidService: VidService, private recordService: RecordService) {}
 
@@ -32,6 +45,7 @@ export class SchedulingComponent implements OnInit, OnDestroy {
       getVidsUpdatedListener()
         .subscribe((vidsData) => {
           this.vids = vidsData.vids;
+          console.log(this.vids);
         });
     this.pendingSub = this.authService.
       getPendingUpdatedListener()
@@ -41,10 +55,28 @@ export class SchedulingComponent implements OnInit, OnDestroy {
         });
 
   }
+
+    drop(event: CdkDragDrop<string[]>) {
+      if (event.previousContainer === event.container) {
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      } else {
+        transferArrayItem(event.previousContainer.data,
+                          event.container.data,
+                          event.previousIndex,
+                          event.currentIndex);
+      }
+    }
+
+
   onClick(userId: string, email: string) {
     alert(userId);
     this.selected1 = email;
   }
+
+  print() {
+    console.log(this.selectedVids);
+  }
+
   ngOnDestroy() {
     this.pendingSub.unsubscribe();
   }

@@ -34,6 +34,8 @@ import {CommonModule} from '@angular/common';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import {ListboxModule} from 'primeng/listbox';
 import {SelectItem} from 'primeng/api';
+import {TableModule} from 'primeng/table';
+import {DragDropModule, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import {SelectItem} from 'primeng/api';
     NgxYoutubePlayerModule.forRoot(),      // od NGX
     VirtualScrollerModule,
     ListboxModule,
+    DragDropModule,
+    TableModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}

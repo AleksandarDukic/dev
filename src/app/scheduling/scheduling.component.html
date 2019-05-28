@@ -23,8 +23,58 @@ lista svih trening
 lista specificnog treninga
 </div>
 </div>
+
 <div style="display:flex">
-drag n drio
-<img src="https://img.youtube.com/vi/u0DfG2-Ao5E/2.jpg">
+  <div class="example-container">
+    <h2>List of excercises</h2>
+
+    <div
+      cdkDropList
+      #excercisesList="cdkDropList"
+      [cdkDropListData]="vids"
+      [cdkDropListConnectedTo]="[doneList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let vid of vids" class="example-box-{{vid.type}}" cdkDrag>
+        <img src="https://img.youtube.com/vi/{{vid.link}}/2.jpg" >
+        {{vid.name}}
+        {{vid.type}}
+        {{vid.note}}
+      </div>
+    </div>
+  </div>
+
+  <div class="example-container">
+    <h2>Excercises to do</h2>
+
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="selectedVids"
+      [cdkDropListConnectedTo]="[excercisesList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let vid of selectedVids" class="example-box-{{vid.type}}"  cdkDrag>
+          <img src="https://img.youtube.com/vi/{{vid.link}}/2.jpg">
+          {{vid.name}}
+          {{vid.type}}
+          {{vid.note}}
+          <mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]="n" placeholder="Broj ponavljanja" type="number" name="n">
+          </mat-form-field>
+          <br>
+          <mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]="s" placeholder="Broj serija" type="number" name="s">
+          </mat-form-field>
+          <br>
+          <mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]="w" placeholder="Opterecenje" type="number" name="weight">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <button (click)=print()>qwe</button>
+  </div>
+
 </div>
-</div>
+
