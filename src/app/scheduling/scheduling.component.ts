@@ -10,6 +10,7 @@ import { RecordData } from '../services/record-data.model';
 import {DragDropModule} from 'primeng/dragdrop';
 import {TableModule} from 'primeng/table';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { ExcercisesData } from '../services/excercises-data.model';
 
 
 @Component({
@@ -20,19 +21,14 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 export class SchedulingComponent implements OnInit, OnDestroy {
   selected: string; // bezveze al mora zbog liste
   selected1: string;
+  selected2: string;
   pending: any [] = [];
   private pendingSub: Subscription;
-  n: number [];
-  s: number [];
-  w: number [];
   vids: VidData[] = [];
-  selectedVids: VidData[] = [];
+  selectedVids: ExcercisesData[] = [];
+  note: string;
   record: RecordData;
   draggedVid: VidData;
-
-  qq: any;
-  ww: any;
-  ee: any;
 
   private vidsSub: Subscription;
 
@@ -71,10 +67,14 @@ export class SchedulingComponent implements OnInit, OnDestroy {
   onClick(userId: string, email: string) {
     alert(userId);
     this.selected1 = email;
+    this.selected2 = userId;
   }
 
-  print() {
+  send() {
     console.log(this.selectedVids);
+    console.log(this.note);
+    console.log(this.selected2);
+    this.recordService.putRecord(this.selected2, this.note, this.selectedVids);
   }
 
   ngOnDestroy() {

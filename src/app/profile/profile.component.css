@@ -1,0 +1,73 @@
+.center {
+  width: 50%;
+  text-align: center;
+  display: inline-block;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+
+.warmup {
+  background-color:rgb(247, 204, 14);
+}
+.core {
+  background-color:rgb(243, 62, 7);
+}
+
+.strech {
+  background-color:rgb(18, 192, 27);
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-container > div {
+  margin: auto;
+}
+
+.flex-container-dumbell {
+  display: flex;
+  text-align: center;
+  margin: auto;
+}
+
+.flex-container-dumbell > p {
+  margin-left: 1%;
+  margin-right: 15%
+}
+.flex-container-dumbell > h3 {
+  margin-left: 2%;
+  margin-right: 5%
+}
+
+.naslov {
+  text-align: center;
+  text-decoration: underline;
+  text-shadow: 0.5px 0.5px rgba(1, 15, 20, 0.719);
+  text-transform: uppercase
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.nula {
+  background-color: darkred
+}
+
+.jedan {
+    background-color: red
+}
+
+.dva {
+  background-color: lightcoral
+}
+
+.tri {
+  background-color: yellow
+}
+
+.cetiri {
+  background-color: green
+}

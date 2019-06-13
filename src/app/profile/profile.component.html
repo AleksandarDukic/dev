@@ -1,13 +1,58 @@
-  <H1>My Profile</H1>
+<div class="center" >
 
-  <h3>Vi ste {{ this.gender }}</h3><br>
-  <h3>Vasa masa je {{ this.weight }} </h3><br>
-  <h3>Visoki ste {{ this.height }} cm</h3><br>
-  <h3>Vi {{ this.ili(this.ever) }} trenirali</h3><br>
-  <h3>Vi {{ this.ili(this.mth) }} trenirali u poslednjih 6 meseci</h3><br>
-  <h3>Vi {{ bol(hurt) }} </h3><br>
-  <h3>Vi {{ teg(diss) }} </h3><br>
-  <h3>Vi {{ this.ili(this.alch) }} konzument alkohola</h3><br>
-  <h3>Vi {{ this.ili(this.smoke) }} konzument cigareta</h3><br>
-  <h3>Vi radite {{ this.work }} sati nedeljno </h3><br>
+  <p>Vi ste {{ this.gender }}</p>
+  <p>Vasa masa je {{ this.weight }} </p>
+  <p>Visoki ste {{ this.height }} cm</p>
+  <p>Vi {{ this.ili(this.ever) }} trenirali</p>
+  <p>Vi {{ this.ili(this.mth) }} trenirali u poslednjih 6 meseci</p>
+  <p>Vi {{ bol(hurt) }} </p>
+  <p>Vi {{ teg(diss) }} </p>
+  <p>Vi {{ this.ili(this.alch) }} konzument alkohola</p>
+  <p>Vi {{ this.ili(this.smoke) }} konzument cigareta</p>
+  <p>Vi radite {{ this.work }} sati nedeljno </p>
+</div>
+<hr>
+<div class="center">
+  <mat-card>
+    <p-virtualScroller [value]="vids" scrollHeight="750px" [itemSize]="">
+      <ng-template pTemplate="item" let-vids>
+        <div class="{{ vids.type }}">
+          <p class="naslov">{{ vids.name }}<p><br>
+          <div class=flex-container>
+            <div display="inline" width="100%" height="100%" float="left" >
+              <youtube-player
+              [videoId]="vids.link"
+              (ready)="savePlayer($event)"
+              (change)="onStateChange($event)"
+              ></youtube-player>
+            </div>
+            <div display="inline">
+                <p>{{ vids.note }}</p>
+                <p>{{ vids.type }}</p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-virtualScroller>
+  </mat-card>
+
+  <mat-card>
+    <h3>Zapazanja</h3>
+    <mat-form-field class="example-full-width">
+      <textarea matInput [(ngModel)]="comment" placeholder="Komentar"></textarea>
+    </mat-form-field>
+    <h3>Koliko vezbi iz zadatog treninga ste uradili</h3>
+    <button class="nula" mat-button (click)="qualityPick(1)">0%</button>
+    <button class="jedan" mat-button (click)="qualityPick(2)">25%</button>
+    <button class="dva" mat-button (click)="qualityPick(3)">50%</button>
+    <button class="tri" mat-button (click)="qualityPick(4)">75%</button>
+    <button class="cetiri"mat-button (click)="qualityPick(5)">100%</button>
+  </mat-card>
+  <mat-card>
+    <button  mat-raised-button >Posaljite odgovor</button>
+  </mat-card>
+
+
+</div>
+
 

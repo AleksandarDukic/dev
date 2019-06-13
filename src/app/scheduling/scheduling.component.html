@@ -60,21 +60,25 @@ lista specificnog treninga
           {{vid.type}}
           {{vid.note}}
           <mat-form-field class="example-full-width">
-          <input matInput [(ngModel)]="n" placeholder="Broj ponavljanja" type="number" name="n">
+          <input matInput [(ngModel)]="vid.n" placeholder="Broj ponavljanja" type="number" name="n">
           </mat-form-field>
           <br>
           <mat-form-field class="example-full-width">
-          <input matInput [(ngModel)]="s" placeholder="Broj serija" type="number" name="s">
+          <input matInput [(ngModel)]="vid.s" placeholder="Broj serija" type="number" name="s">
           </mat-form-field>
           <br>
           <mat-form-field class="example-full-width">
-          <input matInput [(ngModel)]="w" placeholder="Opterecenje" type="number" name="weight">
+          <input matInput [(ngModel)]="vid.w" placeholder="Opterecenje" type="number" name="weight">
           </mat-form-field>
         </div>
       </div>
     </div>
-    <button (click)=print()>qwe</button>
   </div>
-
-</div>
+  <mat-card>
+  <mat-form-field class="example-full-width">
+    <textarea matInput [(ngModel)]="note" placeholder="Leave a note"></textarea>
+  </mat-form-field>
+  </mat-card>
+  <button (click)=send()>Send a Record</button>
+  </div>
 

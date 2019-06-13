@@ -3,8 +3,7 @@ export interface ExcercisesData {
     link: string;
     note: string;
     type: string;
+    n: number;
+    s: number;
+    w: number;
 }
-
-    // s: number,
-    // n: number,
-    // weight: number
