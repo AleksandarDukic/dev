@@ -70,8 +70,8 @@ export class RecordService {
           let excercises = response.record.excercises;
           let note = response.record.note;
 
-          this._id =Id
-          this.date = date
+          this._id = Id;
+          this.date = date;
           this.excercises = excercises;
           this.note = note;
 
@@ -93,4 +93,21 @@ export class RecordService {
           });
         });
   }
+
+  updateRecord(comment, quality) {
+
+    const updatedRecord = {
+      comment: comment,
+      quality: quality,
+      recordId: this._id
+    };
+    return this.http
+      .put(BACKEND_URL + '/record', updatedRecord)
+        .subscribe((response) => {
+          alert('response');
+          localStorage.setItem('training', 'false');
+        } , error => {
+          console.log(error);
+        });
+ }
 }

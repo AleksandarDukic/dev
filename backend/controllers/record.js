@@ -59,7 +59,7 @@ exports.getRecord = (req, res, next) => {
     {user_id: req.userData.userId, quality: undefined}
   )
   .then(result => {
-    console.log("RECORD " + result._id, result.excercises);
+    console.log("RECORD " + result._id + " " + result.excercises);
     res.status(200).json({
       record: result
     })
@@ -70,3 +70,31 @@ exports.getRecord = (req, res, next) => {
     });
   })
 }
+
+exports.updateRecord = (req, res,next) => {
+  let user_id = req.userData.userId;
+  console.log(user_id);
+  console.log(req.body.comment);
+  console.log(req.body.quality);
+  console.log(req.body.recordId);
+  Record.updateOne(
+    {user_id: user_id, quality: undefined},
+    { comment: req.body.comment, quality: req.body.quality}
+  ).then(
+    result => {
+      User.updateOne(
+        {_id: user_id},
+        { pending: false, training: false}
+      )
+      .then(result =>{
+        res.status(201).json({
+          message: 'Record updated',
+        })
+      })
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Invalid!"
+      });
+    })
+  }

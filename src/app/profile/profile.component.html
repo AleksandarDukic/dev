@@ -12,7 +12,8 @@
   <p>Vi radite {{ this.work }} sati nedeljno </p>
 </div>
 <hr>
-<div class="center">
+
+<div class="center" *ngIf="training">
   <mat-card>
     <p-virtualScroller [value]="vids" scrollHeight="750px" [itemSize]="">
       <ng-template pTemplate="item" let-vids>
@@ -27,19 +28,24 @@
               ></youtube-player>
             </div>
             <div display="inline">
-                <p>{{ vids.note }}</p>
-                <p>{{ vids.type }}</p>
+                <p>Opterecenje: {{ vids.w }}</p>
+                <p>Broj Serija: {{ vids.s }}</p>
+                <p>Broj Ponavljanja po Seriji: {{ vids.n }}</p>
             </div>
           </div>
         </div>
       </ng-template>
     </p-virtualScroller>
   </mat-card>
+  <mat-card>
+      <h3>Savet pri vezbanju</h3>
+      <p>{{note}}</p>
+  </mat-card>
 
   <mat-card>
     <h3>Zapazanja</h3>
     <mat-form-field class="example-full-width">
-      <textarea matInput [(ngModel)]="comment" placeholder="Komentar"></textarea>
+      <textarea matInput [(ngModel)]="comment" placeholder="Komentar" required></textarea>
     </mat-form-field>
     <h3>Koliko vezbi iz zadatog treninga ste uradili</h3>
     <button class="nula" mat-button (click)="qualityPick(1)">0%</button>
@@ -49,7 +55,7 @@
     <button class="cetiri"mat-button (click)="qualityPick(5)">100%</button>
   </mat-card>
   <mat-card>
-    <button  mat-raised-button >Posaljite odgovor</button>
+    <button  (click)="sendResponse()" mat-raised-button >Posaljite odgovor</button>
   </mat-card>
 
 

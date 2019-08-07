@@ -9,4 +9,6 @@ router.post("/put_training", RecordController.putRecord);
 
 router.get("/get_training", checkAuth, RecordController.getRecord);
 
+router.put('', checkAuth, RecordController.updateRecord);
+
 module.exports = router;

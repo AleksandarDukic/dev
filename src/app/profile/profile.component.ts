@@ -19,6 +19,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   isAuthenticated: boolean;
   isInitated: boolean;
   isAdmin: boolean;
+  training: boolean;
+  finished: boolean;
 
   private statsUpdatedSub: Subscription;
   gender: string;
@@ -66,7 +68,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       if (value & 2) {
         bol = bol + 'ramenu, ';
       }
-      if (value & 1){
+      if (value & 1) {
         bol = bol + 'vratu';
       }
     }
@@ -119,6 +121,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       });
 
     this.authService.getProfile();
+    if (localStorage.getItem('training') === 'true' ) {
+      this.training = true;
+    } else {
+      this.training = false;
+    }
 
 
     this.statsUpdatedSub = this.authService.getStatsUpdatedListener()
@@ -143,14 +150,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.note = response.note;
 
         });
-      }
+      } else {}
     });
 
   }
 
+  sendResponse() {
+    if ( this.quality === undefined ) {
+
+    } else {
+    this.recordService.updateRecord(this.comment, this.quality);
+    this.finished = true;
+    }
+  }
+
   ngOnDestroy() {
     this.statsUpdatedSub.unsubscribe();
+    if (this.finished === true) {
     this.recordSub.unsubscribe();
+    }
+    this.isAuthenticatedSub.unsubscribe();
   }
 
 }
