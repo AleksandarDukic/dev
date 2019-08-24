@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { StatsData } from '../services/stats-data.model';
 import { RecordService } from '../services/record.service';
 import { ExcercisesData } from '../services/excercises-data.model';
+import { NgForm } from '@angular/forms';
 
 const BACKEND_URL = environment.apiUrl + '/user';
 
@@ -33,6 +34,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   alch: boolean;
   smoke: boolean;
   work: number;
+
+  hurtUpdated: number;
+  weightUpdated = 0;
 
   private recordSub: Subscription;
   record_id: string;
@@ -136,6 +140,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.ever = userData.userStats.ever;
       this.mth = userData.userStats.mth;
       this.hurt = userData.userStats.hurt;
+      this.hurtUpdated = this.hurt;
       this.diss = userData.userStats.diss;
       this.alch = userData.userStats.alch;
       this.smoke = userData.userStats.smoke;
@@ -152,6 +157,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
         });
       } else {}
     });
+
+  }
+
+  updateStats(form: NgForm) {
+    this.hurtUpdated = 0b00001 * form.value.neck + 0b00010 * form.value.shoulder + 0b00100 * form.value.leg;
+    if (form.value.none) {
+      this.hurtUpdated = 0;
+    }
+
+    this.authService.updateProfile(this.hurtUpdated, form.value.weightUpdated);
 
   }
 

@@ -6,6 +6,21 @@
   margin-right: 25%;
 }
 
+.center-left {
+  width: 25%;
+  text-align: left;
+  display: inline-block;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.center-right {
+  width: 25%;
+  text-align: left;
+  display: inline-block;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
 
 .warmup {
   background-color:rgb(247, 204, 14);

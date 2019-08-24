@@ -1,5 +1,4 @@
-<div class="center" >
-
+<div class="center-left" >
   <p>Vi ste {{ this.gender }}</p>
   <p>Vasa masa je {{ this.weight }} </p>
   <p>Visoki ste {{ this.height }} cm</p>
@@ -10,6 +9,22 @@
   <p>Vi {{ this.ili(this.alch) }} konzument alkohola</p>
   <p>Vi {{ this.ili(this.smoke) }} konzument cigareta</p>
   <p>Vi radite {{ this.work }} sati nedeljno </p>
+</div>
+
+<div class="center-right">
+
+  <form (submit)="updateStats(myProfileForm)" #myProfileForm="ngForm" width="100%" height="100%" >
+
+    <p>Vasa trenutna masa je: </p>
+    <input ngModel  type="number" name="weightUpdated" required>
+     <p>Da li imate bolova u:</p>
+        <input ngModel type="checkbox" name="neck" value="neck"> Vratu
+        <input ngModel type="checkbox" name="shoulder" value="shoulder"> Ramenu
+        <input ngModel type="checkbox" name="leg" value="leg" checked> Nozi
+        <input ngModel type="checkbox" name="none" value="none" checked> Nemate vise bolova
+      <input  color="accent" type="submit" value="submit">
+  </form>
+
 </div>
 <hr>
 

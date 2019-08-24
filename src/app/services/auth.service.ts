@@ -156,6 +156,25 @@ export class AuthService {
     });
   }
 
+  updateProfile(hurt, weight) {
+    let data = {};
+    if (weight === 0) {
+      data = {
+        hurt: hurt
+      };
+    } else {
+      data = {
+        hurt: hurt,
+        weight: weight
+      };
+    }
+    this.http
+    .put(BACKEND_URL + this.userId, data)
+    .subscribe ( response => {
+      console.log(response);
+    });
+  }
+
   getProfile() {
     return this.http
     .get<{
@@ -275,7 +294,6 @@ export class AuthService {
       }
     }
   }
-
 
   logout() {
     this.token = null;
